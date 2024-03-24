@@ -1,0 +1,95 @@
+/* footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+} */
+/* body{
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+} */
+/* Trick: */
+body {
+    position: relative;
+    min-height: 100vh;
+  }
+  
+ 
+  
+  footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+  }
+.fa-compass{
+    color: #fe424d;
+}
+.navbar{
+    height: 5rem;
+}.nav-link{
+    color: #222 !important;
+}
+.f-info{
+    background-color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.f-info-socials a{
+   padding: 2rem;
+}
+.f-info-links a{
+  text-decoration: none;
+  color: #222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+   
+  }
+.card{
+    display: flex;
+    margin: 2rem;
+    padding: 0 !important;
+}
+.card-img-top{
+   
+    width: 100%;
+    height: 20rem;
+    border-radius: 0.5rem !important;
+}
+.card-title,.card-text{
+    color: #222;
+   
+}
+.card-heading{
+    position: relative;
+    left: 36px;
+    margin-top: 1rem;
+}
+.card-link{
+    text-decoration: none;
+}
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+.edit-btn{
+
+    background-color: #fe424d;
+}
+.show-img{
+    height: 30vh;
+   
+}
+.btns{
+    display: flex;
+}
+.delete{
+    margin-left: 1rem;
+}
