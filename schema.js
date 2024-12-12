@@ -6,16 +6,16 @@ module.exports.listingSchema = Joi.object({
        description : Joi.string().required(),
         location : Joi.string().required(),
        country: Joi.string().required(),
-       number : Joi.number().required().min(1),
+       price : Joi.number().required().min(1),
        image : Joi.string().allow("",null),
        
     }
 
-    ).required
-})
+    ).required(),
+});
 module.exports.reviewSchema =Joi.object({
     review: Joi.object({
      comment: Joi.string().required(),
       rating: Joi.number().required().min(1).max(5)
-    }).required
-})
+    }).required(),
+});
