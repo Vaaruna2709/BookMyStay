@@ -4,3 +4,9 @@
     </div>
   <% } %>
 
+<% if (error && error.length > 0) { %>
+  <div class="alert alert-danger">
+    <%= error %>
+  </div>
+<% } %>
+

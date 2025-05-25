@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");
 const {listingSchema,reviewSchema}= require("../schema.js");
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError.js");
+const {isLoggedIn} = require("../middleware.js")
 
 const validateListing = (req,res,next)=>{
     // Remove _method field from validation
@@ -25,17 +26,21 @@ const validateListing = (req,res,next)=>{
     res.render("listings/index",{allListings});
  }))
  //New Route
- router.get("/new",(req,res)=>{
+ router.get("/new",isLoggedIn,(req,res)=>{
+
+   
      res.render("listings/new")
  })
  // Create Route
- router.post("/",validateListing,wrapAsync( async (req, res) => {
+ router.post("/",isLoggedIn,validateListing,wrapAsync( async (req, res) => {
         
         //  let result = listingSchema.validate(req.body);//Joi validation
        
         //  if(result.error){
         //    throw new ExpressError(404,result.error);
         //  }
+
+      
          let listing = req.body.listing;
         //  console.log("req",req.body);
          const newListing = new Listing(listing); // Create new instance
@@ -48,7 +53,7 @@ const validateListing = (req,res,next)=>{
  ));
  
  // Edit Route
- router.get("/:id/edit", wrapAsync(async (req, res) => {
+ router.get("/:id/edit",isLoggedIn, wrapAsync(async (req, res) => {
      try{
          
         let { id } = req.params;
@@ -64,7 +69,7 @@ const validateListing = (req,res,next)=>{
  }));
  
  // Update Route
- router.put("/:id",validateListing, wrapAsync(async (req, res) => {
+ router.put("/:id",isLoggedIn,validateListing, wrapAsync(async (req, res) => {
     try{
      if(!req.body.listing){
          throw new ExpressError(400,"Enter valid Data")
@@ -89,7 +94,7 @@ const validateListing = (req,res,next)=>{
      
  }));
  //Delete Route
- router.delete("/:id",wrapAsync(async (req,res)=>{
+ router.delete("/:id",isLoggedIn,wrapAsync(async (req,res)=>{
      let { id } = req.params;
      const listing = await Listing.findById(id);
      console.log(listing);
