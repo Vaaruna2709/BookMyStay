@@ -1,70 +1,91 @@
-<% layout("/layouts/boilerplate")%>
-<body>
-      <div class="row">
-        <div class="col-8  offset-3">
-          <p style="font-size: large;" class="card-heading"><b><%=listing.title%></b></p>
-         <div class=" card col-6 show-card">
-         
-          <img src="<%=listing.image%>" class="show-img card-img-top " alt="listing-img">
-          <p style="padding: 0.5rem;">
-          
-           <%=listing.description%><br>
-           &#8377 <%=listing.price.toLocaleString("en-IN")%><br>
-           <%=listing.location%><br>
-           <%=listing.country%>
-          </p>
-         </div>
-          
+<% layout("/layouts/boilerplate") %>
+
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+
+          <!-- Listing Title -->
+          <h2 class="mb-4 text-center">
+            <%= listing.title %>
+          </h2>
+
+          <!-- Card Container -->
+          <div class="card mb-4 shadow-sm">
+            <img src="<%= listing.image %>" class="card-img-top" alt="listing-img"
+              style="height: 350px; object-fit: cover;">
+
+              <div class="card-body px-4 py-4"> <!-- Padding added -->
+                  <h5 class="card-title mb-3">Owned By: <%= listing.owner?.username || "Unknown" %></h5>
+              <p class="card-text mb-4">
+                <%= listing.description %>
+              </p>
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price: ₹<%= listing.price.toLocaleString("en-IN") %>
+                </li>
+                <li class="list-group-item">Location: <%= listing.location %>
+                </li>
+                <li class="list-group-item">Country: <%= listing.country %>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Edit/Delete Buttons -->
+            <!-- <% if(currUser && currUser._id.equals(listing.owner._id)){%> -->
+              <div class="d-flex justify-content-between">
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary">Edit</a>
+                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                  <button class="btn btn-outline-danger">Delete</button>
+                </form>
+              </div>
+              <!-- <%}%> -->
+          </div>
         </div>
-        <div class="row">
-          <div class="col-1 btns offset-4">
-            <a href="/listings/<%=listing._id%>/edit" class="btn edit-btn ">Edit </a>
-            <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-              <button class="btn btn-dark delete">Delete</button>
+
+        <!-- Review Form -->
+        <div class="card mb-4">
+          <div class="card-header">Leave a Review</div>
+          <div class="card-body">
+            <form method="post" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
+              <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input min='1' max="5" type="range" name="review[rating]" id="rating" class="form-range">
+              </div>
+              <div class="mb-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea id="comment" name="review[comment]" class="form-control" rows="4" required></textarea>
+                <div class="invalid-feedback">Please type your comment.</div>
+              </div>
+              <button class="btn btn-outline-dark">Submit</button>
             </form>
           </div>
         </div>
-       
 
-        <div class="row">
-          <form method="post" action="/listings/<%=listing._id%>/reviews" novalidate class="needs-validation">
-          
-          <div class="review col-7 offset-3">
-            <label for="rating" class="form-label">Range</label>
-            <input min='1' max="5" type="range" name="review[rating]" id="rating" class="form-range">
-            <div class="comment">
-              <div class="invalid-feedback">
-                Please type your comment.
-              </div>
-              <label for="comment" class="form-label" >Comment</label>
-              <textarea type="text" rows="8" cols="25" id="comment" name="review[comment]" class="form-control mb-2" required></textarea>
-            </div>
-           
-            <button class="mb-5 btn btn-outline-dark">Submit</button>
-          </div>
-         </form>
-        </div>
-        <h3>All Reviews</h3>
-         
-            <% for(review of listing.reviews){%>
-              <div class="card" style="width: 18rem;">
-               
+        <!-- Reviews Section -->
+        <h4 class="mb-3">All Reviews</h4>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <% for (review of listing.reviews) { %>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
                 <div class="card-body">
                   <h5 class="card-title">Shradha</h5>
-                  <p class="card-text">Rating : <%=review.rating%></p>
-                  <p class="card-text">Comment : <%=review.comment%></p>
+                  <p class="card-text">Rating: <%= review.rating %>
+                  </p>
+                  <p class="card-text">Comment: <%= review.comment %>
+                  </p>
                 </div>
-                <form method="post" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=delete" class="mb-3">
-                  <button class="btn btn-sm btn-dark">Delete</button>
-              </form>
-              
+                <div class="card-footer bg-transparent border-top-0">
+                  <form method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=delete">
+                    <button class="btn btn-sm btn-dark">Delete</button>
+                  </form>
+                </div>
               </div>
-          <%}%>
-          
-        
-      
-      </div>
-    
- 
+            </div>
+            <% } %>
+        </div>
 
-</body>
+      </div>
+    </div>
+    </div>
+  </body>

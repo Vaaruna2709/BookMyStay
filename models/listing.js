@@ -23,7 +23,12 @@ const listingSchema = new mongoose.Schema({
     [{
         type:  mongoose.Types.ObjectId,
         ref : "Review"
-    }]
+    }],
+    owner:
+    {
+        type:mongoose.Types.ObjectId,
+        ref : "User"
+    }
 })
 listingSchema.post("findOneAndDelete",async(listing)=>{
     await Review.deleteMany({_id:{$in:listing.reviews}})
