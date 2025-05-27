@@ -10,8 +10,8 @@ const validateListing = (req,res,next)=>{
     // Remove _method field from validation
     const { _method, ...bodyWithoutMethod } = req.body;
     let {error} = listingSchema.validate(bodyWithoutMethod);
-    console.log(req.body);
-    console.log(error)
+    // console.log(req.body);
+    // console.log(error)
     if (error){
         let errMsg = error.details.map((el)=>el.message).join(",");
         throw new ExpressError(400, errMsg);
@@ -76,7 +76,7 @@ const validateListing = (req,res,next)=>{
          throw new ExpressError(400,"Enter valid Data")
      }
          let { id } = req.params;
-         console.log("req",req.body);
+        //  console.log("req",req.body);
          await Listing.findByIdAndUpdate(id, { ...req.body.listing });
          res.redirect("/listings");
     }catch(error){
@@ -89,7 +89,9 @@ const validateListing = (req,res,next)=>{
  router.get("/:id",wrapAsync( async (req, res) => {
      
          let { id } = req.params;
-         const listing = await Listing.findById(id).populate("reviews").populate("owner");
+        const listing = await Listing.findById(id).populate({path:"reviews",populate:{
+            path:"author",
+        }}).populate("owner");
         // console.log(listing.owner.username)
          res.render("listings/show", { listing }); 
      

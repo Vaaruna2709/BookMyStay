@@ -62,7 +62,7 @@ app.use((req,res,next)=>{
     res.locals.success = req.flash('success');
      res.locals.error = req.flash('error');
      res.locals.currUser = req.user;
-     console.log(res.locals.currUser)
+    //  console.log("currUser",res.locals.currUser)
     // res.locals.deleteListing = req.flash('deleteListing');
     // if(res.locals.success){
     //     console.log('done');
@@ -74,7 +74,7 @@ app.use((req,res,next)=>{
 
 
 app.use("/listings",listingRouter);
-app.use("/listing/:id/review",reviewRouter);
+app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
 
