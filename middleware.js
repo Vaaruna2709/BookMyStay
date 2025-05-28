@@ -1,6 +1,7 @@
-
+const ExpressError = require("./utils/ExpressError.js");
 const Listing = require("./models/listing.js")
 const Review = require("./models/review.js")
+const {listingSchema,reviewSchema}= require("./schema.js");
 module.exports.isLoggedIn = (req,res,next)=>{
     // console.log(req.path," ", req.originalUrl)
      if(!req.isAuthenticated()){
@@ -37,5 +38,35 @@ module.exports.isAuthor = async (req,res,next)=>{
     }
     next()
 }
+module.exports.validateListing = (req,res,next)=>{
+    // Remove _method field from validation
+    const { _method, ...bodyWithoutMethod } = req.body;
+    let {error} = listingSchema.validate(bodyWithoutMethod);
+    // console.log(req.body);
+    // console.log(error)
+    if (error){
+        let errMsg = error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }else{
+        next();
+    }
+}
+module.exports.validateReview = (req,res,next)=>{
+    // let {error} = reviewSchema.validate(req.body);
+    // if (error){
+    //     let errMsg = err.details.map((el)=>el.message).join(",");
+    //     throw new ExpressError(400, errMsg)
+    // }else{
+    //     next();
+    // }
+    let { error } = reviewSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+}
+
 
 
