@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <form method="post" action="/listings/<%=listing._id%>?_method=put" novalidate class="needs-validation">
+                <form method="post" action="/listings/<%=listing._id%>?_method=put" novalidate class="needs-validation" enctype="multipart/form-data">
                     <input type="hidden" name="_method" value="PUT">
 
                     <div class="mb-3">
@@ -44,15 +44,18 @@
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please enter location</div>
                     </div>
-
                     <div class="mb-3">
-                        <label for="image" class="form-label">Image URL</label>
-                        <input class="form-control" type="text" value="<%=listing.image%>" name="listing[image]" required>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter image URL</div>
+                        Original Image
+                        <img src="<%=listing.image.url%>">
                     </div>
 
-                    <div class="text-center">
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" value="<%=listing.image%>" name="listing[image]" required>
+                       
+                    </div>
+
+                    <div class="text-center mb-5">
                         <button class="btn btn-primary edit-btn" type="submit">Edit</button>
                     </div>
                 </form>

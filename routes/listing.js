@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+require('dotenv').config();
+
+}
 const express = require('express');
 const router = express.Router(); 
 const wrapAsync = require("../utils/wrapAsync");
@@ -6,7 +10,10 @@ const wrapAsync = require("../utils/wrapAsync");
 // const ExpressError = require("../utils/ExpressError.js");
 const {isLoggedIn,isOwner,validateListing} = require("../middleware.js")
 const listingController = require("../controllers/listing.js")
-
+const multer  = require('multer');
+const {storage} = require("../cloudConfig.js")
+// const { eventNames } = require('../models/review.js');
+const upload = multer({ storage })
 
 //Index route
  router.get("/",wrapAsync(listingController.index))
@@ -15,13 +22,16 @@ const listingController = require("../controllers/listing.js")
  router.get("/new",isLoggedIn,listingController.new)
 
  // Create Route
- router.post("/",isLoggedIn,validateListing,wrapAsync( listingController.createNewForm));
+ router.post("/",
+ isLoggedIn, upload.single('listing[image]'),validateListing,wrapAsync( listingController.createNewForm
+
+ ));
  
  // Edit Route
  router.get("/:id/edit",isLoggedIn,isOwner, wrapAsync(listingController.editForm));
  
  // Update Route
- router.put("/:id",isLoggedIn,isOwner,validateListing, wrapAsync(listingController.update));
+ router.put("/:id",isLoggedIn,isOwner, upload.single('listing[image]'),validateListing, wrapAsync(listingController.update));
  
  // Show Route
  router.get("/:id",wrapAsync(listingController.show));

@@ -10,7 +10,7 @@
       <div class="col d-flex justify-content-center">
         <div class="card h-100" style="width: 100%; max-width: 20rem;">
           <a href="/listings/<%=listing._id%>" class="card-link text-decoration-none text-dark">
-            <img src="<%=listing.image%>" class="card-img-top" alt="vacation">
+            <img src="<%=listing.image.url%>" class="card-img-top" alt="vacation">
             <div class="card-body">
               <h5 class="card-title"><%= listing.title %></h5>
               <p class="card-text">&#8377 <%= listing.price.toLocaleString("en-IN") %></p>
