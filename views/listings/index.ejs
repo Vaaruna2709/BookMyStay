@@ -1,26 +1,57 @@
 <% layout("/layouts/boilerplate")%>
-<body>
 
-<div class="container my-4">
-  <h3 class="mb-4  d-flex justify-content-center">All Listings</h3>
+  <body>
 
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4 justify-content-center">
-
-    <% for(listing of allListings){ %>
-      <div class="col d-flex justify-content-center">
-        <div class="card h-100" style="width: 100%; max-width: 20rem;">
-          <a href="/listings/<%=listing._id%>" class="card-link text-decoration-none text-dark">
-            <img src="<%=listing.image.url%>" class="card-img-top" alt="vacation">
-            <div class="card-body">
-              <h5 class="card-title"><%= listing.title %></h5>
-              <p class="card-text">&#8377 <%= listing.price.toLocaleString("en-IN") %></p>
-            </div>
-          </a>
-        </div>
+    <div class="container my-4">
+      <h3 class="mb-4  d-flex justify-content-center">All Listings</h3>
+      <div class="form-check-reverse form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+        <label class="form-check-label" for="switchCheckDefault">Display total after inclusion of taxes</label>
       </div>
-    <% } %>
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 g-4 justify-content-center">
 
-  </div>
-</div>
+        <% for(listing of allListings){ %>
+          <div class="col d-flex justify-content-center">
+            <div class="card h-100" style="width: 100%; max-width: 20rem;">
+              <a href="/listings/<%=listing._id%>" class="card-link text-decoration-none text-dark">
+                <img src="<%=listing.image.url%>" class="card-img-top" alt="vacation">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= listing.title %>
+                  </h5>
+                  <p class="card-text">
+                    &#8377 <span class="price" data-price="<%= listing.price %>">
+                      <%= listing.price.toLocaleString("en-IN") %>
+                    </span>
+                  </p>
 
-</body>
+                  <!-- <p class="card-text">&#8377 <%= listing.price.toLocaleString("en-IN") %>
+                  </p> -->
+                </div>
+              </a>
+            </div>
+          </div>
+          <% } %>
+
+      </div>
+    </div>
+
+
+
+    <script>
+      const taxRate = 0.18;
+      const taxSwitch = document.getElementById("switchCheckDefault");
+      const prices = document.querySelectorAll(".price");
+
+      taxSwitch.addEventListener("change", () => {
+        prices.forEach(span => {
+          const basePrice = parseFloat(span.getAttribute("data-price"));
+          const finalPrice = taxSwitch.checked
+            ? basePrice * (1 + taxRate)
+            : basePrice;
+          span.textContent = Math.floor(finalPrice).toLocaleString("en-IN");
+        });
+      });
+    </script>
+
+  </body>
