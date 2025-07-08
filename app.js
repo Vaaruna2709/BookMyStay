@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
@@ -18,7 +20,7 @@ const reviewRouter = require("./routes/review.js")
 const userRouter = require("./routes/user.js")
 
 const sessionOptions = {
-    secret:'secretCode',
+    secret:process.env.SESSION,
     resave:false,
     saveUninitialized: true,
     cookie:{
@@ -47,7 +49,10 @@ main()
 .catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/bookMyStay');
+  await  mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
 
 }
 app.use(session(sessionOptions));
